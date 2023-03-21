@@ -1,62 +1,93 @@
-import { useState, useEffect } from 'react'
-import './modal.css'
+import React from 'react'
+import PropTypes from 'prop-types'
 
-/**
- *
- * @param props list : text, display, buttonDisplay,width, height, bgColor, margin...
- * @returns a custom modal
- */
-const Modal = (props) => {
-  const [modal, setModal] = useState(props.display)
-  const onButton = () => {
-    setModal('none')
+function Modal({
+  text,
+  display,
+  width,
+  heigth,
+  bgColor,
+  margin,
+  button,
+  buttonText,
+  buttonWidth,
+  buttonHeight,
+  buttonBgColor,
+  buttonBorder,
+  buttonMargin,
+  buttonPadding,
+}) {
+  // useState/Effect to trigger modal display
+  const [modalDisplay, setmodalDisplay] = React.useState({ display })
+  const onButtonClick = () => {
+    setmodalDisplay('none')
   }
+  React.useEffect(() => {
+    const showModal = { display } ? 'block' : 'none'
+    setmodalDisplay(showModal)
+  }, [display])
 
-  useEffect(() => {
-    const showModal = props.display ? 'block' : 'none'
-    setModal(showModal)
-  }, [props.display])
-
-  let buttonDisplay = 'none'
-
-  if (props.button) {
-    buttonDisplay = 'inline-block'
+  // check if the prop.button exist to display it
+  let btnDisplay = 'none'
+  if ({ button }) {
+    btnDisplay = 'inline-block'
   }
 
   return (
-    <div className="modal-container" style={{ display: modal }}>
+    <div
+      className="modal-container"
+      style={{
+        display: modalDisplay,
+      }}
+    >
       <div
         className="modal"
         style={{
-          width: props.width,
-          height: props.height,
-          backgroundColor: props.bgColor,
-          margin: props.margin,
+          width: { width },
+          height: { heigth },
+          backgroundColor: { bgColor },
+          margin: { margin },
         }}
       >
-        <span className="close" onClick={onButton}>
+        <span className="close" onClick={onButtonClick}>
           &times;
         </span>
-        <p>{props.text}</p>
+
+        <p>{text}</p>
         <button
           className="modalBtn"
           style={{
-            display: buttonDisplay,
-            width: props.buttonWidth,
-            height: props.buttonHeight,
-            backgroundColor: props.buttonBgColor,
-            border: props.buttonBorder,
-            margin: props.buttonMargin,
-            padding: props.buttonPadding,
+            display: btnDisplay,
+            width: { buttonWidth },
+            height: { buttonHeight },
+            backgroundColor: { buttonBgColor },
+            border: { buttonBorder },
+            margin: { buttonMargin },
+            padding: { buttonPadding },
           }}
-          onClick={onButton}
+          onClick={onButtonClick}
         >
           {' '}
-          {props.buttonText}
+          {buttonText}{' '}
         </button>
       </div>
     </div>
   )
 }
-
+Modal.propTypes = {
+  text: PropTypes.string,
+  display: PropTypes.string,
+  width: PropTypes.string,
+  heigth: PropTypes.string,
+  bgColor: PropTypes.string,
+  margin: PropTypes.string,
+  button: PropTypes.string,
+  buttonText: PropTypes.string,
+  buttonWidth: PropTypes.string,
+  buttonHeight: PropTypes.string,
+  buttonBgColor: PropTypes.string,
+  buttonBorder: PropTypes.string,
+  buttonMargin: PropTypes.string,
+  buttonPadding: PropTypes.string,
+}
 export default Modal
